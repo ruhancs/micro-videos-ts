@@ -4,7 +4,12 @@
 import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.value-obj"
 import Category from "./category"
 
-describe("Category Tests", () => {
+
+
+describe("Category unit tests", () => {
+    beforeEach(() => {
+        Category.validate = jest.fn()
+    })
     it("should test constructor of category", () => {
         const props = {
             name: "C1", 
@@ -14,6 +19,7 @@ describe("Category Tests", () => {
         }
 
         let category = new Category({name: props.name})
+        expect(Category.validate).toHaveBeenCalled()
         expect(category.props).toStrictEqual({
             name: props.name,
             description: null,
@@ -32,19 +38,19 @@ describe("Category Tests", () => {
     it('should test id field', () => {
         let category = new Category({name: 'C1'})
         expect(category.id).not.toBeNull()
-        expect(category.id).toBeInstanceOf(UniqueEntityId)
+        expect(category.uniqueentityId).toBeInstanceOf(UniqueEntityId)
         
         category = new Category({name: 'C1'}, null)
         expect(category.id).not.toBeNull()
-        expect(category.id).toBeInstanceOf(UniqueEntityId)
+        expect(category.uniqueentityId).toBeInstanceOf(UniqueEntityId)
        
         category = new Category({name: 'C1'}, undefined)
         expect(category.id).not.toBeNull()
-        expect(category.id).toBeInstanceOf(UniqueEntityId)
+        expect(category.uniqueentityId).toBeInstanceOf(UniqueEntityId)
         
         category = new Category({name: 'C1'}, new UniqueEntityId())
         expect(category.id).not.toBeNull()
-        expect(category.id).toBeInstanceOf(UniqueEntityId)
+        expect(category.uniqueentityId).toBeInstanceOf(UniqueEntityId)
     })
 
     it('should test getter and seter description', () => {
@@ -61,5 +67,28 @@ describe("Category Tests", () => {
 
         category['is_active'] = false
         expect(category.is_active).toBe(false)
+    })
+
+    it('should test activate category', () => {
+        let category = new Category({name: 'C1', is_active: false})
+        category.active()
+        expect(category.is_active).toBeTruthy()
+    })
+    
+    it('should test deactivate category', () => {
+        let category = new Category({name: 'C1', is_active: true})
+        category.deactive()
+        expect(category.is_active).not.toBeTruthy()
+    })
+    
+    it('should update name and description of the category', () => {
+        let category = new Category({name: 'C1', description: 'D1'})
+        expect(category.name).toBe('C1')
+        expect(category.description).toBe('D1')
+        
+        category.update('new name', 'new description')
+        expect(Category.validate).toHaveBeenCalledTimes(2)
+        expect(category.name).toBe('new name')
+        expect(category.description).toBe('new description')
     })
 })
