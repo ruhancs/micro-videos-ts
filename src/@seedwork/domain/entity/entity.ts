@@ -1,6 +1,6 @@
 import UniqueEntityId from "../value-objects/unique-entity-id.value-obj";
 
-export default abstract class Entity <Props>{
+export default abstract class Entity <Props = any>{
     public readonly uniqueentityId: UniqueEntityId
     constructor(readonly props: Props, id?: UniqueEntityId) {
         this.uniqueentityId = id || new UniqueEntityId()
