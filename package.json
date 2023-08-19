@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:cov": "npm run test -- --coverage",
     "ts-node": "ts-node",
     "tsc": "tsc",
+    "tsc:check": "npm run tsc -- --noEmit",
     "clean:tsc": "rm tsconfig.tsbuildinfo"
   },
   "keywords": [],
