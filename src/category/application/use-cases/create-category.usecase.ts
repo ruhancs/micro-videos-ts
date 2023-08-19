@@ -1,6 +1,7 @@
 import CategoryRepository from "../../domain/repository/category.repository"
 import Category from "../../domain/entities/category"
 import UseCase from "../../../@seedwork/application/use-case"
+import { CategoryOutputMapper } from "../dto/category-output.dto"
 
 export type InputCreateCategoryUseCase = {
     name: string
@@ -22,12 +23,6 @@ export default class CreateCategoryUseCase implements UseCase<InputCreateCategor
     async execute(input: InputCreateCategoryUseCase): Promise<OutputCreateCategoryUseCase>{
         const category = new Category(input)
         await this.categoryRepository.insert(category)
-        return {
-            id: category.id,
-            name: category.name,
-            description: category.description,
-            is_active: category.is_active,
-            created_at: category.created_at
-        }
+        return CategoryOutputMapper.toCategoryItemOutput(category)
     }
 }
