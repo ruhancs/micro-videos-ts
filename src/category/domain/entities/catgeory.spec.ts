@@ -1,7 +1,8 @@
 //compilador de testes: npm i -D @swc/core @swc/jest 
 //configurar em jest.config.ts
 
-import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.value-obj"
+//import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.value-obj"
+import UniqueEntityId from "#seedwork/domain/value-objects/unique-entity-id.value-obj"
 import Category from "./category"
 
 
