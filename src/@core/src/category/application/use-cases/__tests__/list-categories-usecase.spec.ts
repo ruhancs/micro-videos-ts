@@ -1,5 +1,5 @@
 import ListCategoriesUseCase from "../list-categories.usecase"
-import CategoryInMemoryRepository from "../../../infra/repository/inMemory/category-in-memory.repository"
+import {CategoryInMemoryRepository} from "../../../infra/repository/inMemory/category-in-memory.repository"
 import Category from "../../../domain/entities/category"
 import { CategorySearchResult } from "../../../domain/repository/category.repository"
 
