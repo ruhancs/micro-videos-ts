@@ -1,5 +1,5 @@
 import UseCase from "../../../@seedwork/application/use-case"
-import CategoryRepository from "../../domain/repository/category.repository"
+import {CategoryRepository} from "../../domain/repository/category.repository"
 
 export namespace DeleteCategoryUseCase {
     export type InputDeleteCategoryUseCase = {

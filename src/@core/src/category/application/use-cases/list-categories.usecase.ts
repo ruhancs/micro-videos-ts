@@ -1,5 +1,5 @@
 import UseCase from "../../../@seedwork/application/use-case"
-import CategoryRepository, { CategorySearchParams, CategorySearchResult } from "../../domain/repository/category.repository"
+import { CategorySearchParams, CategorySearchResult, CategoryRepository } from "../../domain/repository/category.repository"
 import { SearchInputDto } from "../../../@seedwork/application/dto/search-input";
 import { CategoryOutputMapper, OutputCatgeoryUseCase } from "../dto/category-output.dto";
 import { PaginationOutputDto, PaginationOutputMapper } from "../../../@seedwork/application/dto/pagination-output";

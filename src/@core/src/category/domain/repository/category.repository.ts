@@ -8,7 +8,7 @@ export class CategorySearchParams extends SearchParams<CategoryFilter>{}
 
 export class CategorySearchResult extends SearchResult<Category, CategoryFilter>{}
 
-export default interface CategoryRepository extends SearchableRepositoryInterface<
+export interface CategoryRepository extends SearchableRepositoryInterface<
     Category, 
     CategoryFilter, 
     CategorySearchParams, 

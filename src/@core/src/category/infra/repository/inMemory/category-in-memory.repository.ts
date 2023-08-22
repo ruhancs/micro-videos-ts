@@ -1,9 +1,9 @@
 import Category from "../../../domain/entities/category";
 import {InMemorySearchableRepository} from "../../../../@seedwork/domain/repository/in-memory.repository";
-import CategoryRepository, { CategoryFilter } from "../../../domain/repository/category.repository";
+import {CategoryRepository, CategoryFilter} from "../../../domain/repository/category.repository";
 import { SortDirection } from "@seedwork/domain/repository/repository-contracts";
 
-export default class CategoryInMemoryRepository 
+export class CategoryInMemoryRepository 
 extends InMemorySearchableRepository<Category> 
 implements CategoryRepository{
     sortableFields: string[] = ['name','created_at'];
@@ -21,3 +21,5 @@ implements CategoryRepository{
         return !sort ? super.applySort(items,'created_at', 'desc') : super.applySort(items,sort,sort_dir)
     }
 }
+
+//export default CategoryInMemoryRepository
