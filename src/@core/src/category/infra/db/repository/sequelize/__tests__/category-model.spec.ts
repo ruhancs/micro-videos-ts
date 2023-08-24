@@ -1,23 +1,12 @@
-import { DataType, Sequelize } from "sequelize-typescript"
-import { CategoryModel } from "../category-model"
+import { DataType } from "sequelize-typescript"
+import { CategorySequelize } from "../category-sequelize"
+import { setupSequelize } from "#seedwork/infra/testing/helpers/db"
 
 describe('CategoryModel unit test', () => {
-    let sequelize: Sequelize
-
-    beforeAll(() => sequelize = new Sequelize({
-        dialect: 'sqlite',
-        host: ':memory:',
-        logging: true,
-        models: [CategoryModel],
-    }))
-
-    //zerar o db antes de cada test
-    beforeEach(async() => {await sequelize.sync({force: true})})
-
-    afterAll(async() => {await sequelize.close()})
+    setupSequelize({models: [CategorySequelize.CategoryModel]})
 
     it('should test mapping props', async() => {
-        const attrMap = CategoryModel.getAttributes()
+        const attrMap = CategorySequelize.CategoryModel.getAttributes()
         const attr =Object.keys(attrMap)
 
         expect(attr).toStrictEqual(['id', 'name', 'description', 'is_active', 'created_at'])
@@ -72,7 +61,7 @@ describe('CategoryModel unit test', () => {
                 created_at: new Date()
             }
         ]
-        const category = await CategoryModel.create(arrange[0])
+        const category = await CategorySequelize.CategoryModel.create(arrange[0])
         expect(category.toJSON()).toStrictEqual(arrange[0])
     })
 })
