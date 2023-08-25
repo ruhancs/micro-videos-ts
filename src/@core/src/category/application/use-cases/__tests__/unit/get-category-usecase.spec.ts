@@ -1,14 +1,15 @@
-import Category from "../../../domain/entities/category"
-import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error"
-import {CategoryInMemoryRepository} from "../../../infra/db/repository/inMemory/category-in-memory.repository"
-import DeleteCategoryUseCase from "../delete-category-usecase"
+import { GetCategoryUseCase } from "#category/application"
+import { Category } from "#category/domain"
+import { CategoryInMemoryRepository } from "#category/infra"
+import { NotFoundError } from "#seedwork/domain"
+
 
 describe('GetCategoryUseCase unit test', () => {
-    let usecase: DeleteCategoryUseCase.DeleteCategoryUseCase
+    let usecase: GetCategoryUseCase.GetCategoryUseCase
     let repository: CategoryInMemoryRepository
     beforeEach(() => {
         repository = new CategoryInMemoryRepository()
-        usecase = new DeleteCategoryUseCase.DeleteCategoryUseCase(repository)
+        usecase = new GetCategoryUseCase.GetCategoryUseCase(repository)
     })
 
     it('should throw an error when category not found', async() => {
@@ -21,11 +22,17 @@ describe('GetCategoryUseCase unit test', () => {
             new Category({name: 'N1'})
         ]
         repository.items = items
-        const spyGet = jest.spyOn(repository, 'delete')
+        const spyGet = jest.spyOn(repository, 'findById')
         let output = await usecase.execute({id: items[0].id})
 
         expect(spyGet).toHaveBeenCalledTimes(1)
-        expect(repository.items).toStrictEqual([])
+        expect(output).toStrictEqual({
+            id: repository.items[0].id,
+            name: 'N1',
+            description: null,
+            is_active: true,
+            created_at: repository.items[0].created_at
+        })
     })
     
 })

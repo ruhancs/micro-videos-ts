@@ -1,14 +1,14 @@
-import ListCategoriesUseCase from "../list-categories.usecase"
-import {CategoryInMemoryRepository} from "../../../infra/db/repository/inMemory/category-in-memory.repository"
-import Category from "../../../domain/entities/category"
-import { CategorySearchResult } from "../../../domain/repository/category.repository"
+import { ListAllCategoriesUseCase } from "#category/application"
+import { CategorySearchResult, Category } from "#category/domain"
+import { CategoryInMemoryRepository } from "#category/infra"
+
 
 describe('ListCategoriesUseCase unit test', () => {
-    let usecase: ListCategoriesUseCase.ListCategoriesUseCase
+    let usecase: ListAllCategoriesUseCase.ListCategoriesUseCase
     let repository: CategoryInMemoryRepository
     beforeEach(() => {
         repository = new CategoryInMemoryRepository()
-        usecase = new ListCategoriesUseCase.ListCategoriesUseCase(repository)
+        usecase = new ListAllCategoriesUseCase.ListCategoriesUseCase(repository)
     })
     it('should test toOutput method', () => {
         let result = new CategorySearchResult({

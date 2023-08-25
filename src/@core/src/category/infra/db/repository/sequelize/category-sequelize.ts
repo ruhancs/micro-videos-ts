@@ -63,10 +63,16 @@ export namespace CategorySequelize {
             return models.map((model) => CategoryModelMapper.toEntity(model))
         }
         async update(entity: Category): Promise<void> {
-            throw new Error("Method not implemented.");
+            const _id = `${entity.id}`
+            await this._get(_id)
+            await this.categoryModel.update(entity.toJSON(), {
+                where: {id: _id}
+            })
         }
         async delete(id: string | UniqueEntityId): Promise<void> {
-            throw new Error("Method not implemented.");
+            const _id = `${id}`
+            await this._get(_id)
+            await this.categoryModel.destroy({where: {id: _id}})
         }
         async search(props: CategorySearchParams): Promise<CategorySearchResult> {
             const offset = (props.page -1) * props.per_page

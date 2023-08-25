@@ -276,4 +276,40 @@ describe('CategorySequelizeRepository Tests', () => {
             }
         })
     })
+
+    it('should update an entity', async() => {
+        const category = new Category({name: 'C1'})
+
+        await expect(categoryRepository.update(category)).rejects.toThrow(
+            new NotFoundError(`Entity not found with this id: ${category.id}`)
+        )
+    })
+
+    it('should update an entity', async() => {
+        let category = new Category({name: 'C1'})
+        await categoryRepository.insert(category)
+
+        category.update('update', 'D1')
+        await categoryRepository.update(category)
+
+        let updatedCategory = await CategorySequelize.CategoryModel.findByPk(category.id)
+
+        expect(updatedCategory.toJSON()).toMatchObject({
+            name: 'update',
+            description:'D1',
+            is_active: true
+        })
+    })
+    
+    it('should delete an entity', async() => {
+        let category = new Category({name: 'C1'})
+        await categoryRepository.insert(category)
+
+        await categoryRepository.delete(category.id)
+
+        await expect(categoryRepository.findById(category.id)).rejects.toThrow(
+            new NotFoundError(`Entity not found with this id: ${category.id}`)
+        )
+    })
+
 })
