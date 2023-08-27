@@ -1,12 +1,13 @@
-import { CategoriesController } from './categories.controller';
-import { CreateCategoryDto } from './dto/create-category.dto';
+import { CategoriesController } from '../../categories.controller';
+import { CreateCategoryDto } from '../../dto/create-category.dto';
 import {
   CreateCategoryUseCase,
   ListAllCategoriesUseCase,
   UpdateCategoryUseCase,
 } from '@rc/micro-videos/category/application';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { UpdateCategoryDto } from '../../dto/update-category.dto';
 import { SearchInputDto } from '@rc/micro-videos/dist/@seedwork/application/dto/search-input';
+import { CategoryPresenter } from '../../presenter/category.presenter';
 
 describe('CategoriesController unit test', () => {
   let controller: CategoriesController;
@@ -17,7 +18,7 @@ describe('CategoriesController unit test', () => {
 
   it('should create category', async () => {
     const created_at = new Date();
-    const createOutput: CreateCategoryUseCase.OutputCreateCategoryUseCase = {
+    const output: CreateCategoryUseCase.OutputCreateCategoryUseCase = {
       id: '77349e57-d8cf-47cf-991e-8f1b62efad1b',
       name: 'N1',
       description: 'D1',
@@ -25,7 +26,7 @@ describe('CategoriesController unit test', () => {
       created_at: created_at,
     };
     const mockCreateUseCase = {
-      execute: jest.fn().mockReturnValue(createOutput),
+      execute: jest.fn().mockReturnValue(output),
     };
 
     controller['createUseCase'] = mockCreateUseCase as any;
@@ -34,9 +35,10 @@ describe('CategoriesController unit test', () => {
       description: 'D1',
       is_active: true,
     };
-    const output = await controller.create(createInput);
+    const presenter = await controller.create(createInput);
     expect(mockCreateUseCase.execute).toHaveBeenCalledWith(createInput);
-    expect(output).toStrictEqual(createOutput);
+    expect(presenter).toBeInstanceOf(CategoryPresenter);
+    expect(presenter).toStrictEqual(new CategoryPresenter(output));
   });
 
   it('should update category', async () => {
@@ -81,7 +83,7 @@ describe('CategoriesController unit test', () => {
   it('should get category', async () => {
     const created_at = new Date();
     const id = '77349e57-d8cf-47cf-991e-8f1b62efad1b';
-    const expectedOutput: UpdateCategoryUseCase.OutputUpdateCategoryUseCase = {
+    const Output: UpdateCategoryUseCase.OutputUpdateCategoryUseCase = {
       id: id,
       name: 'N1',
       description: 'D1',
@@ -89,14 +91,14 @@ describe('CategoriesController unit test', () => {
       created_at: created_at,
     };
     const mockGetUseCase = {
-      execute: jest.fn().mockReturnValue(expectedOutput),
+      execute: jest.fn().mockReturnValue(Output),
     };
 
     controller['getUseCase'] = mockGetUseCase as any;
 
-    const output = await controller.findOne(id);
+    const presenter = await controller.findOne(id);
     expect(mockGetUseCase.execute).toHaveBeenCalledWith({ id });
-    expect(output).toStrictEqual(expectedOutput);
+    expect(presenter).toStrictEqual(new CategoryPresenter(Output));
   });
 
   it('should searc category', async () => {
