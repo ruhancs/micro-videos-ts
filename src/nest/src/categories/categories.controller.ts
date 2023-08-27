@@ -20,6 +20,7 @@ import {
   UpdateCategoryUseCase,
 } from '@rc/micro-videos/category/application';
 import { SearchCategoryDto } from './dto/search-category.dto';
+import { CategoryPresenter } from './presenter/category.presenter';
 
 @Controller('categories')
 export class CategoriesController {
@@ -40,7 +41,8 @@ export class CategoriesController {
 
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.createUseCase.execute(createCategoryDto);
+    const output = await this.createUseCase.execute(createCategoryDto);
+    return new CategoryPresenter(output);
   }
 
   @Get()
@@ -49,8 +51,9 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.getUseCase.execute({ id: id });
+  async findOne(@Param('id') id: string) {
+    const output = await this.getUseCase.execute({ id: id });
+    return new CategoryPresenter(output);
   }
 
   @Put(':id')
