@@ -1,4 +1,5 @@
 // created from 'create-ts-index'
 
-export * from './inMemory';
+export * from './config';
 export * from './sequelize';
+export * from './testing';
