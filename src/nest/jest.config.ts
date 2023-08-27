@@ -16,5 +16,9 @@ export default {
     testEnvironment: "node",
     moduleNameMapper: {
         "@rc/micro\\-videos/(.*)$": "<rootDir>/../../../node_modules/@rc/micro-videos/dist/$1",
+        //"#seedwork/domain": "<rootDir>/../../../node_modules/@rc/micro-videos/dist/@seedwork/domain/index.js",
+        "#seedwork/(.*)$": "<rootDir>/../../../node_modules/@rc/micro-videos/dist/@seedwork/$1",
+        //"#catgeory/domain": "<rootDir>/../../../node_modules/@rc/micro-videos/dist/category/domain/index.js",
+        "#category/(.*)$": "<rootDir>/../../../node_modules/@rc/micro-videos/dist/category/$1",
     }
 };
