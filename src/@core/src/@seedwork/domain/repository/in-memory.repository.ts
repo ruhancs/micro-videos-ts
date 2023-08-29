@@ -4,6 +4,9 @@ import UniqueEntityId from "../value-objects/unique-entity-id.value-obj";
 import { RepositoryInterface, SearchParams, SearchResult, SearchableRepositoryInterface, SortDirection } from "./repository-contracts";
 
 export abstract class InMemoryRepository<E extends Entity> implements RepositoryInterface<E> {
+    async bulkInsert(entities: E[]): Promise<void> {
+        this.items.push(...entities)
+    }
     items: E[] = []
     async insert(entity: E): Promise<void> {
         this.items.push(entity)
