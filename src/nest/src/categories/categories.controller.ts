@@ -20,7 +20,10 @@ import {
   UpdateCategoryUseCase,
 } from '@rc/micro-videos/category/application';
 import { SearchCategoryDto } from './dto/search-category.dto';
-import { CategoryPresenter } from './presenter/category.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from '../@share/presenters/collection.presenter';
 
 @Controller('categories')
 export class CategoriesController {
@@ -46,8 +49,9 @@ export class CategoriesController {
   }
 
   @Get()
-  search(@Query() searchParams: SearchCategoryDto) {
-    return this.listUseCase.execute(searchParams);
+  async search(@Query() searchParams: SearchCategoryDto) {
+    const output = await this.listUseCase.execute(searchParams);
+    return new CategoryCollectionPresenter(output);
   }
 
   @Get(':id')

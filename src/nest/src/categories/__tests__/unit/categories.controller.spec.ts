@@ -7,7 +7,10 @@ import {
 } from '@rc/micro-videos/category/application';
 import { UpdateCategoryDto } from '../../dto/update-category.dto';
 import { SearchInputDto } from '@rc/micro-videos/dist/@seedwork/application/dto/search-input';
-import { CategoryPresenter } from '../../presenter/category.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from '../../../@share/presenters/collection.presenter';
 
 describe('CategoriesController unit test', () => {
   let controller: CategoriesController;
@@ -98,7 +101,7 @@ describe('CategoriesController unit test', () => {
 
     const presenter = await controller.findOne(id);
     expect(mockGetUseCase.execute).toHaveBeenCalledWith({ id });
-    expect(presenter).toStrictEqual(new CategoryPresenter(Output));
+    expect(presenter).toMatchObject(new CategoryPresenter(Output));
   });
 
   it('should searc category', async () => {
@@ -132,9 +135,10 @@ describe('CategoriesController unit test', () => {
       sort_dir: 'asc',
       filter: 'N1',
     };
-    const output = await controller.search(input);
+    const presenter = await controller.search(input);
 
+    expect(presenter).toBeInstanceOf(CategoryCollectionPresenter);
     expect(mockGetUseCase.execute).toHaveBeenCalledWith(input);
-    expect(output).toStrictEqual(expectedOutput);
+    expect(new CategoryCollectionPresenter(expectedOutput)).toEqual(presenter);
   });
 });
