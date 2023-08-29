@@ -3,6 +3,7 @@ import Entity from '../../../@seedwork/domain/entity/entity';
 import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.value-obj';
 import CategoryValidatorFactory from '../validators/category.validator';
 import { EntityValidationError } from '../../../@seedwork/domain/errors/validaton-error';
+import { CategoryFakeBuilder } from './category-fake-builder';
 
 export interface CategoryProperties {
     name: string, 
@@ -64,6 +65,10 @@ export class Category extends Entity<CategoryProperties> {
         if(!isValid){
             throw new EntityValidationError(validator.errors)
         }
+    }
+
+    static fake() {
+        return CategoryFakeBuilder
     }
 
     //static validate(props: Omit<CategoryProperties, 'created_at'>) {
