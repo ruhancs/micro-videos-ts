@@ -30,7 +30,6 @@ describe('ListCategoriesUseCase unit test', () => {
         let output = await usecase.execute({})
         
         output = await usecase.execute({})
-        console.log(output)
         expect(output).toMatchObject({
             items: [...models].reverse().map((m) => CategoryModelMapper.toEntity(m).toJSON()),
             total: 2,

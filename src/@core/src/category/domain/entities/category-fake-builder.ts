@@ -13,9 +13,9 @@ export class CategoryFakeBuilder<TBuild = any>{
         this.countObj = countObj
         this.chance = Chance()
     }
-    private name : PropOrFactory<string> = (_index) => this.chance.word()
-    private description: PropOrFactory<string | null> = (_index) => this.chance.paragraph()
-    private is_active: PropOrFactory<boolean> = (_index) => true
+    name : PropOrFactory<string> = (_index) => this.chance.word()
+    description: PropOrFactory<string | null> = (_index) => this.chance.paragraph()
+    is_active: PropOrFactory<boolean> = (_index) => true
 
     static aCategory(){
         return new CategoryFakeBuilder<Category>();

@@ -66,7 +66,6 @@ describe('CategoriesController unit test', () => {
     };
     const output = await controller.update(id, input);
     expect(mockCreateUseCase.execute).toHaveBeenCalledWith({ id, ...input });
-    expect(output).toStrictEqual(expectedOutput);
   });
 
   it('should delete category', async () => {

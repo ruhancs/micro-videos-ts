@@ -9,6 +9,9 @@ import {
   Put,
   HttpCode,
   Query,
+  UsePipes,
+  ValidationPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -17,6 +20,7 @@ import {
   DeleteCategoryUseCase,
   GetCategoryUseCase,
   ListAllCategoriesUseCase,
+  OutputCatgeoryUseCase,
   UpdateCategoryUseCase,
 } from '@rc/micro-videos/category/application';
 import { SearchCategoryDto } from './dto/search-category.dto';
@@ -45,7 +49,7 @@ export class CategoriesController {
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     const output = await this.createUseCase.execute(createCategoryDto);
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Get()
@@ -55,22 +59,35 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
     const output = await this.getUseCase.execute({ id: id });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.updateUseCase.execute({ id, ...updateCategoryDto });
+    const output = await this.updateUseCase.execute({
+      id,
+      ...updateCategoryDto,
+    });
+    return;
+    CategoriesController.categoryToResponse(output);
   }
 
   @HttpCode(204)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
     return this.removeUseCase.execute({ id });
+  }
+
+  static categoryToResponse(output: OutputCatgeoryUseCase) {
+    return new CategoryPresenter(output);
   }
 }

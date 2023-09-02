@@ -52,8 +52,8 @@ export class ConfigModule extends NestConfigModule {
       envFilePath: [
         ...(Array.isArray(envFilePath) ? envFilePath : [envFilePath]),
         //se existir sobrescreve a de baixo
-        join(__dirname, `../envs/.env.${process.env.NODE_ENV}`),
-        join(__dirname, '../envs/.env'),
+        join(__dirname, `../../envs/.env.${process.env.NODE_ENV}`),
+        join(__dirname, '../../envs/.env'),
       ],
       //validacao do .env
       validationSchema: Joi.object({

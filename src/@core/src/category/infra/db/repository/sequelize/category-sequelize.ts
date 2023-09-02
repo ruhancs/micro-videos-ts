@@ -1,8 +1,8 @@
-import { EntityValidationError } from "#seedwork/domain";
+import { EntityValidationError, SortDirection } from "#seedwork/domain";
 import { LoadEntityError } from "#seedwork/domain/errors/load-entity.error";
 import { Category, CategoryRepository, CategorySearchParams, CategorySearchResult } from "#category/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
-import { Op } from "sequelize";
+import { Op, literal } from "sequelize";
 import { SequelizeModelFactory } from "#seedwork/infra/sequelize/sequelize-model.factory";
 import { Column, DataType, PrimaryKey, Table, Model } from "sequelize-typescript";
 
@@ -48,6 +48,12 @@ export namespace CategorySequelize {
 
     export class CategorySequelizeRepository implements CategoryRepository {
         sortableFields: string[] = ['name', 'created_at'];
+        //qnd nao tiver ordenacao o mysql ordenar as letras maiuscula primeiro
+        orderBy = {
+            mysql: {
+                name: (sort_dir: SortDirection) => literal(`binary name ${sort_dir}`)
+            }
+        }
 
         constructor(private categoryModel: typeof CategoryModel) {}
 
@@ -88,7 +94,8 @@ export namespace CategorySequelize {
                 }),
                 //se sort e sort_dir nao existir ordena por desc created_at
                 ...(props.sort && this.sortableFields.includes(props.sort) 
-                    ? {order: [[props.sort,props.sort_dir]]}
+                    //? {order: [[props.sort,props.sort_dir]]}
+                    ? {order: this.formatSort(props.sort,props.sort_dir)}
                     : {order: [['created_at', 'desc']]}),
                 offset,
                 limit
@@ -102,7 +109,15 @@ export namespace CategorySequelize {
                 sort: props.sort,
                 sort_dir: props.sort_dir,
             })
+    
+        }
 
+        private formatSort(sort: string, sort_dir: SortDirection) {
+            const dialect = this.categoryModel.sequelize.getDialect()
+            if(this.orderBy[dialect] && this.orderBy[dialect][sort]) {
+                return this.orderBy[dialect][sort](sort_dir)
+            }
+            return [[sort, sort_dir]]
         }
 
         private async _get(id: string): Promise<CategoryModel> {
