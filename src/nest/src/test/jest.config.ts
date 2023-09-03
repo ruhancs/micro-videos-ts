@@ -1,6 +1,6 @@
 export default {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  ...require('../jest.config').default,
+  ...require('../../jest.config').default,
   rootDir: './',
   testRegex: '.*\\.spec\\.ts$',
   maxWorkers: 1, //executa os testes de forma sequencial --runInBand
