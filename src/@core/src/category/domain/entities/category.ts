@@ -12,7 +12,9 @@ export interface CategoryProperties {
     created_at?: Date
 }
 
-export class Category extends Entity<CategoryProperties> {
+export type CategoryPropJson = Required<{ id: string; } & CategoryProperties>
+
+export class Category extends Entity<CategoryProperties, CategoryPropJson> {
     constructor(readonly props: CategoryProperties, id?: UniqueEntityId) {
         Category.validate(props)
         super(props, id)
@@ -69,6 +71,16 @@ export class Category extends Entity<CategoryProperties> {
 
     static fake() {
         return CategoryFakeBuilder
+    }
+
+    toJSON(): CategoryPropJson {
+        return {
+            id: this.id.toString(),
+            name: this.name,
+            description: this.description,
+            is_active: this.is_active,
+            created_at: this.created_at
+        }
     }
 
     //static validate(props: Omit<CategoryProperties, 'created_at'>) {
