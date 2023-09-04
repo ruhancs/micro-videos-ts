@@ -8,7 +8,10 @@
       ],
       "#category/*": [
         "./category/*"
-      ]
+      ],
+      "#cast-member/*": [
+        "./cast-member/*"
+      ],
     },
     "outDir": "./dist",
   },

@@ -12,7 +12,10 @@
             ],
             "#category/*": [
                 "./category/*"
-            ]
+            ],
+            "#cast-member/*": [
+                "./cast-member/*"
+            ],
         }
     }
 }
